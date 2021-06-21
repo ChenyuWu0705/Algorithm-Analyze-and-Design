@@ -1,36 +1,36 @@
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-const int N = 1005;
+const int N = 5005;
 int dp[N];
-int cost[N];//ÈÎÎñËù»¨·ÑµÄÊ±¼ä
-int vis[N][N];//±ê¼ÇÊı×é 
-int check[N];//ÈÎÎñ¹éÊôÄÄ¸ö»úÆ÷ 
-int n;//ÈÎÎñµÄÊıÁ¿
-int sum = 0;//´ú±í×Ü¹²»¨·ÑµÄÊ±¼ä
+int cost[N];//ä»»åŠ¡æ‰€èŠ±è´¹çš„æ—¶é—´
+int vis[N][N];//æ ‡è®°æ•°ç»„ 
+int check[N];//ä»»åŠ¡å½’å±å“ªä¸ªæœºå™¨ 
+int n;//ä»»åŠ¡çš„æ•°é‡
+int sum = 0;//ä»£è¡¨æ€»å…±èŠ±è´¹çš„æ—¶é—´
 void FindSchedule(int n, int sum) {
-	//DFS»ØËİÀ´²éÕÒ·½°¸ 
+	//DFSå›æº¯æ¥æŸ¥æ‰¾æ–¹æ¡ˆ 
 	if (n == 0)return;
 	if (vis[n][sum] == 0) {
 		FindSchedule(n - 1, sum);
 	}
 	else {
 		FindSchedule(n - 1, sum - cost[n]);
-		check[cost[n]] = 1;
+		check[n] = 1;
 	}
 }
 void run() {
-	printf("ÇëÊäÈëÈÎÎñµÄÊıÁ¿:\n");
+	printf("è¯·è¾“å…¥ä»»åŠ¡çš„æ•°é‡:\n");
 	scanf("%d", &n);
 	puts("-------------------");
 	for (int i = 1;i <= n;i++) {
-		printf("ÇëÊäÈëÈÎÎñ%dµÄ¼Ó¹¤Ê±¼ä:\n", i);
+		printf("è¯·è¾“å…¥ä»»åŠ¡%dçš„åŠ å·¥æ—¶é—´:\n", i);
 		scanf("%d", &cost[i]);
 		sum += cost[i];
 	}
 	puts("-------------------");
 	vis[0][0] = 1; 
-	for (int i = 1;i <= n;i++) { //01±³°ü 
+	for (int i = 1;i <= n;i++) { //01èƒŒåŒ… 
 		for (int j = sum / 2;j >= cost[i];j--) {
 			dp[j] = max(dp[j - cost[i]] + cost[i], dp[j]);
 			if (dp[j] == dp[j - cost[i]] + cost[i]) {
@@ -39,17 +39,17 @@ void run() {
 		}
 	}
 	FindSchedule(n, sum / 2);
-	printf("»úÆ÷1µÄ¼Ó¹¤µÄÈÎÎñ:\n");
+	printf("æœºå™¨1çš„åŠ å·¥çš„ä»»åŠ¡:\n");
 	for (int i = 1;i <= n;i++) {
 		if (check[i])printf("%d ", i);
 	}
 	puts("\n-------------------");
-	printf("»úÆ÷2µÄ¼Ó¹¤µÄÈÎÎñ:\n");
+	printf("æœºå™¨2çš„åŠ å·¥çš„ä»»åŠ¡:\n");
 	for (int i = 1;i <= n;i++) {
 		if (!check[i])printf("%d ", i);
 	}
 	puts("\n-------------------");
-	printf("×îÉÙĞèÒª»¨·ÑµÄ¼Ó¹¤Ê±¼ä:%d\n", sum - dp[sum / 2]);
+	printf("æœ€å°‘éœ€è¦èŠ±è´¹çš„åŠ å·¥æ—¶é—´:%d\n", sum - dp[sum / 2]);
 }
 int main() {
 	run();
